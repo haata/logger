@@ -188,6 +188,22 @@ func (l *Logger) Close() {
 	}
 }
 
+// SetFlags sets the output flags for the logger.
+func (l *Logger) SetFlags(flag int) {
+	l.infoLog.SetFlags(flag)
+	l.warningLog.SetFlags(flag)
+	l.errorLog.SetFlags(flag)
+	l.fatalLog.SetFlags(flag)
+}
+
+// SetPrefix modifies the built-in prefix for each log level
+func (l *Logger) SetPrefix(prefix string) {
+	l.infoLog.SetPrefix(prefix+tagInfo)
+	l.warningLog.SetPrefix(prefix+tagWarning)
+	l.errorLog.SetPrefix(prefix+tagError)
+	l.fatalLog.SetPrefix(prefix+tagFatal)
+}
+
 // Info logs with the Info severity.
 // Arguments are handled in the manner of fmt.Print.
 func (l *Logger) Info(v ...interface{}) {
@@ -348,6 +364,14 @@ func SetLevel(lvl Level) {
 // by default using the default logger.
 func V(lvl Level) Verbose {
 	return defaultLogger.V(lvl)
+}
+
+// SetPrefix modifies the built-in prefix for each log level
+func SetPrefix(prefix string) {
+	defaultLogger.infoLog.SetPrefix(prefix+tagInfo)
+	defaultLogger.warningLog.SetPrefix(prefix+tagWarning)
+	defaultLogger.errorLog.SetPrefix(prefix+tagError)
+	defaultLogger.fatalLog.SetPrefix(prefix+tagFatal)
 }
 
 // Info uses the default logger and logs with the Info severity.
